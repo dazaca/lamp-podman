@@ -22,8 +22,6 @@ Desde la terminal:
 ./lamp-menu.sh
 ```
 
-O bien, haz clic sobre el icono **Menu LAMP (Podman)** desde tu menú de aplicaciones GNOME.
-
 ---
 
 ## 🔧 Servicios disponibles
