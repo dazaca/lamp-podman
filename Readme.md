@@ -1,5 +1,4 @@
 
-```markdown
 # 🧱 Entorno LAMP en Contenedores con Podman
 
 Este proyecto configura un entorno **LAMP completo (Linux, Apache, MySQL, PHP)** usando contenedores gestionados por **Podman** y **podman-compose** en Fedora Silverblue.
