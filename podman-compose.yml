@@ -1,0 +1,48 @@
+version: '3.8'  # Indica la versión del esquema de Compose utilizada
+
+services:
+  apachephp:  # Servicio que contiene Apache + PHP + PHP-FPM
+    container_name: apachephp  # Nombre del contenedor
+    build:
+      context: .               # Usa el directorio actual como contexto de construcción
+      dockerfile: Containerfile  # Especifica el archivo Dockerfile personalizado
+    image: servidor-web        # Nombre de la imagen que se construirá
+    ports:
+      - "8080:80"              # Mapea el puerto 8080 del host al 80 del contenedor
+    volumes:
+      - ./web:/var/www/html:Z  # Sincroniza tu carpeta web local con la del contenedor. Z es por SELinux en Fedora
+    networks:
+      - redlamp                # Conecta este servicio a la red redlamp
+    depends_on:
+      - mysql                  # Espera a que el contenedor mysql esté listo antes de arrancar
+
+  mysql:  # Servicio para la base de datos MySQL
+    container_name: mysql      # Nombre del contenedor
+    image: mysql:8.3           # Usa la imagen oficial de MySQL versión 8.3
+    environment:               # Variables de entorno para configurar la base al iniciar
+      MYSQL_ROOT_PASSWORD: clave123
+      MYSQL_DATABASE: prueba
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: clave123
+    volumes:
+      - mysql_data:/var/lib/mysql  # Guarda los datos en un volumen persistente
+    networks:
+      - redlamp
+
+  phpmyadmin:
+    image: phpmyadmin:5
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+    networks:
+      - redlamp
+ 
+networks:
+  redlamp:  # Define una red interna compartida entre contenedores
+
+volumes:
+  mysql_data:  # Volumen donde se guardarán los datos de la base de datos
+
