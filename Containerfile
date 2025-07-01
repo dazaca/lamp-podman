@@ -19,3 +19,13 @@ EXPOSE 80
 # Comando que arranca php-fpm y luego httpd en primer plano
 CMD /bin/bash -c "php-fpm && httpd -DFOREGROUND"
 
+RUN dnf install -y php-pecl-xdebug && \
+    echo -e "\n\
+zend_extension=xdebug.so\n\
+xdebug.mode=debug\n\
+xdebug.start_with_request=yes\n\
+xdebug.client_host=host.containers.internal\n\
+xdebug.client_port=9003\n\
+xdebug.log=/tmp/xdebug.log\n" \
+> /etc/php.d/15-xdebug.ini
+
